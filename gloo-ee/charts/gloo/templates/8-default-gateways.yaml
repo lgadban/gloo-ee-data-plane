@@ -18,6 +18,8 @@ spec:
   {{- end }}
   bindPort: {{ $spec.podTemplate.httpPort }}
   httpGateway:
+    virtualServiceNamespaces:
+      - {{ .Release.Namespace }}
     options:
       ratelimitServer:
         ratelimitServerRef:
@@ -40,7 +42,7 @@ spec:
   useProxyProto: {{ $gatewaySettings.useProxyProto }}
   ssl: false
   proxyNames:
-  - {{ $name | kebabcase }}
+  - {{ .Release.Namespace }}-{{ $name | kebabcase }}
 {{- end }}{{/* with */}}
 {{- end }}{{/* define "defaultGateway.gateway" */}}
 
@@ -65,6 +67,8 @@ spec:
   {{- end }}
   bindPort: {{ $spec.podTemplate.httpsPort }}
   httpGateway:
+    virtualServiceNamespaces:
+      - {{ .Release.Namespace }}
     options:
       ratelimitServer:
         ratelimitServerRef:
@@ -87,7 +91,7 @@ spec:
   useProxyProto: {{ $gatewaySettings.useProxyProto }}
   ssl: true
   proxyNames:
-  - {{ $name | kebabcase }}
+  - {{ .Release.Namespace }}-{{ $name | kebabcase }}
 {{- end }}{{/* with */}}
 {{- end }}{{/* define "defaultGatway.sslGateway" */}}
 
@@ -120,7 +124,7 @@ spec:
       destination:
         forwardSniClusterName: {}
   proxyNames:
-  - {{ $name | kebabcase }}
+  - {{ .Release.Namespace }}-{{ $name | kebabcase }}
 {{- end }}{{/* with */}}
 {{- end }}{{/* define "defaultGateway.failoverGateway" */}}
 
