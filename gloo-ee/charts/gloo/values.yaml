@@ -95,6 +95,7 @@ gatewayProxies:
       httpsPort: 443
       type: LoadBalancer
 global:
+  controlNamespace: gloo-system
   extauthCustomYaml: true
   glooMtls:
     enabled: false

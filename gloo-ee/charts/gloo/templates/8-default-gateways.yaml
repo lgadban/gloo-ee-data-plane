@@ -17,20 +17,16 @@ spec:
   bindAddress: "::"
   {{- end }}
   bindPort: {{ $spec.podTemplate.httpPort }}
-{{- if $gatewaySettings.customHttpGateway}}
-  httpGateway:
-{{ toYaml $gatewaySettings.customHttpGateway | indent 4}}
-{{- else if $spec.tracing }}
-{{- if $spec.tracing.provider }}
   httpGateway:
     options:
-      httpConnectionManagerSettings:
-        tracing:
-{{ toYaml $spec.tracing.provider | indent 10 }}
-{{- end }}
-{{- else }}
-  httpGateway: {}
-{{- end }}
+      ratelimitServer:
+        ratelimitServerRef:
+          name: ratelimit
+          namespace: {{ .Release.Namespace }}
+      extauth:
+        extauthzServerRef:
+          name: extauth
+          namespace: {{ .Release.Namespace }}
 {{ if or ($gatewaySettings.options) ($gatewaySettings.accessLoggingService) }}
   options:
 {{- end }}
@@ -68,20 +64,16 @@ spec:
   bindAddress: "::"
   {{- end }}
   bindPort: {{ $spec.podTemplate.httpsPort }}
-{{- if $gatewaySettings.customHttpsGateway }}
-  httpGateway:
-{{ toYaml $gatewaySettings.customHttpsGateway | indent 6}}
-{{- else if $spec.tracing }}
-{{- if $spec.tracing.provider }}
   httpGateway:
     options:
-      httpConnectionManagerSettings:
-        tracing:
-{{ toYaml $spec.tracing.provider | indent 10 }}
-{{- end }}{{/* if $spec.tracing.provider */}}
-{{- else }}
-  httpGateway: {}
-{{- end }}{{/* if $gatewaySettings.customHttpsGateway */}}
+      ratelimitServer:
+        ratelimitServerRef:
+          name: ratelimit
+          namespace: {{ .Release.Namespace }}
+      extauth:
+        extauthzServerRef:
+          name: extauth
+          namespace: {{ .Release.Namespace }}
 {{ if or ($gatewaySettings.options) ($gatewaySettings.accessLoggingService) }}
   options:
 {{- end }}
