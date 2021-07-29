@@ -1,0 +1,27 @@
+global:
+  controlNamespace: gloo-system
+  extauthCustomYaml: false
+  extensions:
+    extAuth:
+      deployment:
+        glooAddress: gloo.gloo-system.svc.cluster.local:9977
+        floatingUserId: true
+        fsGroup: 1000650000
+    rateLimit:
+      deployment:
+        glooAddress: gloo.gloo-system.svc.cluster.local:9977
+        floatingUserId: true
+gloo:
+  gatewayProxies:
+    gatewayProxy:
+      podTemplate:
+        floatingUserId: true
+        fsGroup: 1000650000
+        disableNetBind: true
+        runUnprivileged: true
+redis:
+  deployment:
+    floatingUserId: false
+    fsGroup: 1000650000
+    runAsGroup: 1000650000
+    runAsUser: 1000650000
